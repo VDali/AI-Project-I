@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AA7010EA-A344-40C5-8874-0BBF5E644D89</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AI Project I</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>A83008ADA0B4D541FF043057EFBC3B02775E3871</key>
+		<string>https://github.com/VDali/AI-Project-I.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AI Project I.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>A83008ADA0B4D541FF043057EFBC3B02775E3871</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/VDali/AI-Project-I.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>A83008ADA0B4D541FF043057EFBC3B02775E3871</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A83008ADA0B4D541FF043057EFBC3B02775E3871</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AI%20Project%20I</string>
+		</dict>
+	</array>
+</dict>
+</plist>
