@@ -28,7 +28,13 @@
 using namespace cv;
 using namespace std;
 
+int  thresh = 100;
+int max_thresh = 255;
+RNG rng(12345);
+
 //function declarations
+
+void FindBlobs(const cv::Mat &binary, std::vector < std::vector<cv::Point2i> > &blobs);
 
 /**
 	Function that returns the maximum of 3 integers
@@ -102,7 +108,7 @@ int main()
     }
     
     //show the frame in "MyVideo" window
-    imshow("MyVideo0", frame0);
+//    imshow("MyVideo0", frame0);
     
     //create a window called "MyVideo"
     namedWindow("MyVideo",WINDOW_AUTOSIZE);
@@ -163,10 +169,15 @@ int main()
         //  call myMotionEnergy function
         myMotionEnergy(myMotionHistory, myMH);
         
-        myHistogram(myMH);
+//        myHistogram(myMH);
+        Mat binary;
+        vector < vector<Point2i > > blobs;
+//        Mat binary;
         
+        cv::threshold(myMH, binary, 0.0, 1.0, cv::THRESH_BINARY);
         
-        
+        FindBlobs(binary, blobs);
+
         
         imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
         frame0 = frame;
@@ -244,23 +255,110 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
 }
 
 
+
 void myHistogram(Mat& src)
 {
-    int h1 = 0;
-    int h2 = 0;
+    int min_x = src.cols;
+    int max_x = 0;
+    int min_y = src.rows;
+    int max_y = 0;
     
+    int step = 0;
     
-    for (int i = 0; i < src.rows; i++){
-        for (int j = 0; j < src.cols; j++){
+    for (int i = 0; i < src.rows; i+=step){
+        for (int j = 0; j < src.cols; j+=step){
             if (src.at<uchar>(i,j) == 255){
-                if (i >= src.rows/2)
-                    h1++;
-                else
-                    h2++;
+
+                
+//                if(min_x>i) min_x = i;
+//                if(max_x<i) max_x = i;
+//                if(min_y>j) min_y = j;
+//                if(max_y<j) max_y = j;
+                
+                
+               
             }
         }
     }
     
-    cout << "rows is " << src.rows << " cols is " << src.cols << endl;
-    cout << "H1 is " << h1 << " H2 is " << h2 << endl;
+    cout << "rows " << src.rows << " cols " << src.cols<<endl;
+//    
+//    Point x(min_x,min_y);
+//    Point y(max_x,max_y);
+//    Rect rect(x,y);
+//    rectangle(src, x, y, (0,0,255));
 }
+
+void findCont(Mat& src_gray)
+{
+    Mat canny_output;
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    int  thresh = 100;
+    int max_thresh = 255;
+    
+    /// Detect edges using canny
+    Canny( src_gray, canny_output, CvHistogram::thresh, thresh*2, 3 );
+    /// Find contours
+    findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+    
+    /// Draw contours
+    Mat drawing = Mat::zeros( canny_output.size(), CV_8UC3 );
+    for( int i = 0; i< contours.size(); i++ )
+    {
+        Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+        drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, Point() );
+    }
+    
+    /// Show in a window
+    namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
+    imshow( "Contours", drawing );
+}
+
+
+//void FindBlobs(const cv::Mat &binary, std::vector < std::vector<cv::Point2i> > &blobs)
+//{
+//    blobs.clear();
+//    
+//    // Fill the label_image with the blobs
+//    // 0  - background
+//    // 1  - unlabelled foreground
+//    // 2+ - labelled foreground
+//    
+//    cv::Mat label_image;
+//    binary.convertTo(label_image, CV_32SC1);
+//    
+//    int label_count = 2; // starts at 2 because 0,1 are used already
+//    
+//    for(int y=0; y < label_image.rows; y++) {
+//        int *row = (int*)label_image.ptr(y);
+//        for(int x=0; x < label_image.cols; x++) {
+//            if(row[x] != 1) {
+//                continue;
+//            }
+//            
+//            cv::Rect rect;
+//            cv::floodFill(label_image, cv::Point(x,y), label_count, &rect, 0, 0, 4);
+//            
+//            std::vector <cv::Point2i> blob;
+//            
+//            for(int i=rect.y; i < (rect.y+rect.height); i++) {
+//                int *row2 = (int*)label_image.ptr(i);
+//                for(int j=rect.x; j < (rect.x+rect.width); j++) {
+//                    if(row2[j] != label_count) {
+//                        continue;
+//                    }
+//                    
+//                    blob.push_back(cv::Point2i(j,i));
+//                }
+//            }
+//            
+//            blobs.push_back(blob);
+//            
+//            label_count++;
+//        }
+//    }
+//    
+//    std::cout << "Number of blobs" << label_count;
+//}
+
