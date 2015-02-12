@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D9E801B1A8C090D003A180A /* lab2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9E80191A8C090D003A180A /* lab2.cpp */; };
+		1D9E801D1A8C423F003A180A /* MotionTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9E801C1A8C423F003A180A /* MotionTracking.cpp */; };
 		55C938F11A84442C00B14BBE /* P1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C938F01A84442C00B14BBE /* P1.cpp */; };
 		55C938FD1A8445B000B14BBE /* libopencv_highgui.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C938FC1A8445B000B14BBE /* libopencv_highgui.dylib */; };
 		55C938FF1A8445B700B14BBE /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C938FE1A8445B700B14BBE /* libopencv_core.dylib */; };
@@ -26,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D9E80191A8C090D003A180A /* lab2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lab2.cpp; sourceTree = "<group>"; };
+		1D9E801C1A8C423F003A180A /* MotionTracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotionTracking.cpp; sourceTree = "<group>"; };
 		55C938E61A84438B00B14BBE /* AI Project I */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AI Project I"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C938F01A84442C00B14BBE /* P1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = P1.cpp; sourceTree = "<group>"; };
 		55C938FC1A8445B000B14BBE /* libopencv_highgui.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_highgui.dylib; sourceTree = "<group>"; };
@@ -69,7 +73,9 @@
 				55C938FE1A8445B700B14BBE /* libopencv_core.dylib */,
 				55C939001A8445CB00B14BBE /* libopencv_imgproc.dylib */,
 				55C938FC1A8445B000B14BBE /* libopencv_highgui.dylib */,
+				1D9E801C1A8C423F003A180A /* MotionTracking.cpp */,
 				55C938F01A84442C00B14BBE /* P1.cpp */,
+				1D9E80191A8C090D003A180A /* lab2.cpp */,
 			);
 			path = "AI Project I";
 			sourceTree = "<group>";
@@ -130,6 +136,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D9E801D1A8C423F003A180A /* MotionTracking.cpp in Sources */,
+				1D9E801B1A8C090D003A180A /* lab2.cpp in Sources */,
 				55C938F11A84442C00B14BBE /* P1.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
