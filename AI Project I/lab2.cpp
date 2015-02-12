@@ -289,31 +289,31 @@ void myHistogram(Mat& src)
 //    rectangle(src, x, y, (0,0,255));
 }
 
-void findCont(Mat& src_gray)
-{
-    Mat canny_output;
-    vector<vector<Point> > contours;
-    vector<Vec4i> hierarchy;
-    int  thresh = 100;
-    int max_thresh = 255;
-    
-    /// Detect edges using canny
-    Canny( src_gray, canny_output, CvHistogram::thresh, thresh*2, 3 );
-    /// Find contours
-    findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
-    
-    /// Draw contours
-    Mat drawing = Mat::zeros( canny_output.size(), CV_8UC3 );
-    for( int i = 0; i< contours.size(); i++ )
-    {
-        Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-        drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, Point() );
-    }
-    
-    /// Show in a window
-    namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
-    imshow( "Contours", drawing );
-}
+//void findCont(Mat& src_gray)
+//{
+//    Mat canny_output;
+//    vector<vector<Point> > contours;
+//    vector<Vec4i> hierarchy;
+//    int  thresh = 100;
+//    int max_thresh = 255;
+//    
+//    /// Detect edges using canny
+//    Canny( src_gray, canny_output, CvHistogram::thresh, thresh*2, 3 );
+//    /// Find contours
+//    findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+//    
+//    /// Draw contours
+//    Mat drawing = Mat::zeros( canny_output.size(), CV_8UC3 );
+//    for( int i = 0; i< contours.size(); i++ )
+//    {
+//        Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+//        drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, Point() );
+//    }
+//    
+//    /// Show in a window
+//    namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
+//    imshow( "Contours", drawing );
+//}
 
 
 //void FindBlobs(const cv::Mat &binary, std::vector < std::vector<cv::Point2i> > &blobs)
