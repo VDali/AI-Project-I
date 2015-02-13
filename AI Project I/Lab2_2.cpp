@@ -24,7 +24,8 @@ using namespace cv;
 using namespace std;
 
 //dimensions of 2-D array used for frame
-const static int X_ARR = 50;
+const static int N = 45;
+const static int X_ARR = N;
 const static int Y_ARR = 2;
 
 //Function Declarations
@@ -44,11 +45,14 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
 //function that accumulates the frame differences for a certain number of pairs of frames
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
-//function used to find the min and max in the 2D array
+//functions used to find the min and max in the 2D array
 void minX();
 void maxX();
 void minY();
 void maxY();
+
+
+void detectGesture();
 
 int maxXPoint[2]= {0,0};
 int minXPoint[2]= {0,0};
@@ -59,7 +63,7 @@ int minYPoint[2]= {0,0};
 int pointArray[X_ARR][Y_ARR];
 int position = 0;
 
-        //const static int BLUR_SIZE = 10;
+const static int BLUR_SIZE = 10;
 
 //we'll have just one object to search for and keep track of its position
 int theObject[2] = {0,0};
@@ -116,9 +120,11 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     
     
     //Update position in array
-    if (position > 50)
+    if (position >= N)
     {
-        position = position % 50;
+        position = 0;
+        
+        detectGesture();
         
         //Call Veena's code
     }
@@ -231,6 +237,9 @@ int main()
         }
         
     }
+    
+    cout << "Rows " << frame0.rows<<endl;
+    
     cap.release();
     return 0;
 }
@@ -378,6 +387,29 @@ void maxY() {
     maxYPoint[1] = currentMax[1];
     
     
+}
+
+void detectGesture()
+{
+    
+    maxY();
+    minY();
+    minX();
+    maxX();
+    
+    cout << "MaxY = " << maxYPoint[1] << endl;
+    cout << "MinY = " << minYPoint[1] << endl;
+    cout << "MaxX = " << maxXPoint[0] << endl;
+    cout << "MinX = " << minXPoint[0] << endl;
+    
+    if (abs(maxYPoint[1] - minYPoint[1]) > 200)
+    {
+        cout << "THROW DETECTED" << endl;
+    }
+    else
+    {
+        cout << "NOTHING" << endl;
+    }
 }
 
 
