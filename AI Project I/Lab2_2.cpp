@@ -26,8 +26,8 @@ using namespace cv;
 using namespace std;
 
 //dimensions of 2-D array used for frame
-const static int X_ARR = 2;
-const static int Y_ARR = 50;
+const static int X_ARR = 50;
+const static int Y_ARR = 2;
 
 //function declarations
 
@@ -120,11 +120,11 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     //findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
     findContours(temp,contours,hierarchy,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_SIMPLE );// retrieves external contours
     
-    Scalar color(0, 255, 0);
-    Mat tempImg= Mat::zeros(temp.rows, temp.cols, CV_8UC1);
-    drawContours(tempImg, contours, -1, color, 3);
-    
-    imshow("contours", tempImg);
+//    Scalar color(0, 255, 0);
+//    Mat tempImg= Mat::zeros(temp.rows, temp.cols, CV_8UC1);
+//    drawContours(tempImg, contours, -1, color, 3);
+//    
+//    imshow("contours", tempImg);
 
     //if contours vector is not empty, we have found some objects
     if(contours.size()>0)objectDetected=true;
@@ -149,16 +149,15 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     int y = theObject[1];
     
     
-//    //Update position in array
-//    if (position > 50)
-//    {
-//        position = position % 50;
-//        
-//        //Call Veena's code
-//    }
-//    pointArray[position][0] = x;
-//    pointArray[position][1] = y;
-//    position++;
+    //Update position in array
+    if (position > 50)
+    {
+        position = position % 50;
+        
+    }
+    pointArray[position][0] = x;
+    pointArray[position][1] = y;
+    position+=1;
 
     //draw some crosshairs around the object
     circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
