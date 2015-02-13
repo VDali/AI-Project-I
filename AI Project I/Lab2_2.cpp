@@ -24,7 +24,7 @@ using namespace cv;
 using namespace std;
 
 //dimensions of 2-D array used for frame
-const static int N = 45;
+const static int N = 5;
 const static int X_ARR = N;
 const static int Y_ARR = 2;
 
@@ -352,7 +352,7 @@ void minY() {
     int min = 5000000;
     int currentMin[2]= {0, 0};
     
-    for(int i = 0; i < Y_ARR; i++)
+    for(int i = 0; i < X_ARR; i++)
     {
         if (pointArray[i][1] < min)
         {
@@ -373,7 +373,7 @@ void maxY() {
     int max = -5000000;
     int currentMax[2]= {0, 0};
     
-    for(int i = 0; i < Y_ARR; i++)
+    for(int i = 0; i < X_ARR; i++)
     {
         if (pointArray[i][1] > max)
         {
@@ -389,6 +389,15 @@ void maxY() {
     
 }
 
+void eraseArray()
+{
+    for(int i=0; i < X_ARR; i++)
+    {
+        pointArray[i][0] = 0;
+        pointArray[i][1] = 0;
+    }
+}
+
 void detectGesture()
 {
     
@@ -402,9 +411,34 @@ void detectGesture()
     cout << "MaxX = " << maxXPoint[0] << endl;
     cout << "MinX = " << minXPoint[0] << endl;
     
-    if (abs(maxYPoint[1] - minYPoint[1]) > 200)
+    if (maxXPoint[0] - minXPoint[0] > 200 &&  maxYPoint[1] - minYPoint[1] > 200)
     {
+        
+        cout << "WIPING DETECTED" << endl;
+        
+        position = 0;
+        eraseArray();
+        
+    }
+    else if (maxXPoint[0] - minXPoint[0] > 200 &&  maxYPoint[1] - minYPoint[1] < 50)
+    {
+        
+        cout << "PETTING DETECTED" << endl;
+        
+        position = 0;
+        eraseArray();
+        
+        
+    }
+    else if (maxYPoint[1] - minYPoint[1] > 300)
+    {
+        
+
         cout << "THROW DETECTED" << endl;
+        
+        position = 0;
+        eraseArray();
+        
     }
     else
     {
