@@ -28,7 +28,13 @@
 using namespace cv;
 using namespace std;
 
+int  thresh = 100;
+int max_thresh = 255;
+RNG rng(12345);
+
 //function declarations
+
+void FindBlobs(const cv::Mat &binary, std::vector < std::vector<cv::Point2i> > &blobs);
 
 /**
 	Function that returns the maximum of 3 integers
@@ -102,7 +108,7 @@ int main()
     }
     
     //show the frame in "MyVideo" window
-    imshow("MyVideo0", frame0);
+//    imshow("MyVideo0", frame0);
     
     //create a window called "MyVideo"
     namedWindow("MyVideo",WINDOW_AUTOSIZE);
@@ -166,7 +172,10 @@ int main()
 //        myHistogram(myMH);
         
         
+        cv::threshold(myMH, binary, 0.0, 1.0, cv::THRESH_BINARY);
         
+        FindBlobs(binary, blobs);
+
         
         imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
         frame0 = frame;
