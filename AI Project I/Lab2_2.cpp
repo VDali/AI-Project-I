@@ -72,10 +72,16 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
 //used to find the min and max in the array
-int minX(int poiArr[X_ARR][Y_ARR]);
-int maxX(int poiArr[X_ARR][Y_ARR]);
-int minY(int poiArr[X_ARR][Y_ARR]);
-int maxY(int poiArr[X_ARR][Y_ARR]);
+void minX();
+void maxX();
+void minY();
+void maxY();
+
+int minXPoint[2] = {0,0};
+int maxXPoint[2] = {0,0};
+int minYPoint[2] = {0,0};
+int maxYPoint[2] = {0,0};
+
 
 
 //our sensitivity value to be used in the absdiff() function
@@ -88,7 +94,8 @@ int theObject[2] = {0,0};
 //bounding rectangle of the object, we will use the center of this as its position.
 Rect objectBoundingRectangle = Rect(0,0,0,0);
 
-int pointArray[2][50];
+int pointArray[X_ARR][Y_ARR];
+int position = 0;
 
 //int to string helper function
 string intToString(int number){
@@ -142,16 +149,16 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     int y = theObject[1];
     
     
-    //Update position in array
-    if (position > 50)
-    {
-        position = position % 50;
-        
-        //Call Veena's code
-    }
-    pointArray[position][0] = x;
-    pointArray[position][1] = y;
-    position++;
+//    //Update position in array
+//    if (position > 50)
+//    {
+//        position = position % 50;
+//        
+//        //Call Veena's code
+//    }
+//    pointArray[position][0] = x;
+//    pointArray[position][1] = y;
+//    position++;
 
     //draw some crosshairs around the object
     circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
@@ -352,23 +359,90 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
     }
 }
 
-int minX(int poiArr[X_ARR][Y_ARR]) {
-    for (int i = 0; poiArr[][]; i++)
+void minX() {
+    
+    int min = 5000000;
+    int currentMin[2]= {0, 0};
+    
+    for(int i = 0; i < X_ARR; i++)
+    {
+        if (pointArray[i][0] < min)
+        {
+            min = pointArray[i][0];
+            currentMin[0] = pointArray[i][0];
+            currentMin[1] = pointArray[i][1];
+        }
+    }
+    
+    
+    minXPoint[0] = currentMin[0];
+    minXPoint[1] = currentMin[1];
     
 }
 
-int maxX(int poiArr[X_ARR][Y_ARR]) {
+void maxX() {
+    
+    int max = -5000000;
+    int currentMax[2]= {0, 0};
+    
+    for(int i = 0; i < X_ARR; i++)
+    {
+        if (pointArray[i][0] > max)
+        {
+            max = pointArray[i][0];
+            currentMax[0] = pointArray[i][0];
+            currentMax[1] = pointArray[i][1];
+        }
+    }
+    
+    
+    maxXPoint[0] = currentMax[0];
+    maxXPoint[1] = currentMax[1];
+    
     
 }
 
-int minY(int poiArr[X_ARR][Y_ARR]) {
-    for (int i = 0; )
-        
+
+void minY() {
+    
+    int min = 5000000;
+    int currentMin[2]= {0, 0};
+    
+    for(int i = 0; i < Y_ARR; i++)
+    {
+        if (pointArray[i][1] < min)
+        {
+            min = pointArray[i][1];
+            currentMin[0] = pointArray[i][0];
+            currentMin[1] = pointArray[i][1];
+        }
+    }
+    
+    minYPoint[0] = currentMin[0];
+    minYPoint[1] = currentMin[1];
+    
+    
 }
 
-int maxY(int poiArr[X_ARR][Y_ARR]) {
-    for (int i = 0; )
-        
+void maxY() {
+    
+    int max = -5000000;
+    int currentMax[2]= {0, 0};
+    
+    for(int i = 0; i < Y_ARR; i++)
+    {
+        if (pointArray[i][1] > max)
+        {
+            max = pointArray[i][1];
+            currentMax[0] = pointArray[i][0];
+            currentMax[1] = pointArray[i][1];
+        }
+    }
+    
+    maxYPoint[0] = currentMax[0];
+    maxYPoint[1] = currentMax[1];
+    
+    
 }
 
 
