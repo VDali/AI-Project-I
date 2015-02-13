@@ -12,7 +12,6 @@
 
 //#include "stdafx.h"
 
-
 //opencv libraries
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -23,11 +22,12 @@
 #include <vector>
 #include <stdio.h>
 
-
-
 using namespace cv;
 using namespace std;
 
+//dimensions of 2-D array used for frame
+const static int X_ARR = 2;
+const static int Y_ARR = 50;
 
 //function declarations
 
@@ -71,8 +71,11 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
  */
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
-
-
+//used to find the min and max in the array
+int minX(int poiArr[X_ARR][Y_ARR]);
+int maxX(int poiArr[X_ARR][Y_ARR]);
+int minY(int poiArr[X_ARR][Y_ARR]);
+int maxY(int poiArr[X_ARR][Y_ARR]);
 
 
 //our sensitivity value to be used in the absdiff() function
@@ -87,7 +90,6 @@ Rect objectBoundingRectangle = Rect(0,0,0,0);
 
 int pointArray[2][50];
 
-
 //int to string helper function
 string intToString(int number){
 
@@ -96,8 +98,6 @@ string intToString(int number){
     ss << number;
     return ss.str();
 }
-
-
 
 void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     //notice how we use the '&' operator for objectDetected and cameraFeed. This is because we wish
@@ -336,6 +336,25 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
             }
         }
     }
+}
+
+int minX(int poiArr[X_ARR][Y_ARR]) {
+    for (int i = 0; poiArr[][]; i++)
+    
+}
+
+int maxX(int poiArr[X_ARR][Y_ARR]) {
+    
+}
+
+int minY(int poiArr[X_ARR][Y_ARR]) {
+    for (int i = 0; )
+        
+}
+
+int maxY(int poiArr[X_ARR][Y_ARR]) {
+    for (int i = 0; )
+        
 }
 
 
