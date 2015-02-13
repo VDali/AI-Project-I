@@ -87,6 +87,7 @@ Rect objectBoundingRectangle = Rect(0,0,0,0);
 
 int pointArray[2][50];
 
+int position = 0;
 
 //int to string helper function
 string intToString(int number){
@@ -140,6 +141,18 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     //make some temp x and y variables so we dont have to type out so much
     int x = theObject[0];
     int y = theObject[1];
+    
+    
+    //Update position in array
+    if (position > 50)
+    {
+        position = position % 50;
+        
+        //Call Veena's code
+    }
+    pointArray[position][0] = x;
+    pointArray[position][1] = y;
+    position++;
 
     //draw some crosshairs around the object
     circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
@@ -247,6 +260,8 @@ int main()
         myMotionHistory.erase(myMotionHistory.begin());
         myMotionHistory.push_back(frameDest);
         Mat myMH = Mat::zeros(frame0.rows, frame0.cols, CV_8UC1);
+        
+        
         
         ////----------------
         ////  d) Visualizing motion history
