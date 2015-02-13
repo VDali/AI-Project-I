@@ -258,16 +258,16 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
 
 void myHistogram(Mat& src)
 {
-    int min_x = src.cols;
-    int max_x = 0;
-    int min_y = src.rows;
-    int max_y = 0;
-    
-    int step = 0;
-    
-    for (int i = 0; i < src.rows; i+=step){
-        for (int j = 0; j < src.cols; j+=step){
-            if (src.at<uchar>(i,j) == 255){
+//    int min_x = src.cols;
+//    int max_x = 0;
+//    int min_y = src.rows;
+//    int max_y = 0;
+//    
+//    int step = 0;
+//    
+//    for (int i = 0; i < src.rows; i+=step){
+//        for (int j = 0; j < src.cols; j+=step){
+//            if (src.at<uchar>(i,j) == 255){
 
                 
 //                if(min_x>i) min_x = i;
@@ -277,12 +277,12 @@ void myHistogram(Mat& src)
                 
                 
                
-            }
-        }
-    }
+//            }
+//        }
+//    }
     
-    cout << "rows " << src.rows << " cols " << src.cols<<endl;
-//    
+//    cout << "rows " << src.rows << " cols " << src.cols<<endl;
+//
 //    Point x(min_x,min_y);
 //    Point y(max_x,max_y);
 //    Rect rect(x,y);
