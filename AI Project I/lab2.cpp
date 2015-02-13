@@ -176,7 +176,7 @@ int main()
         
         cv::threshold(myMH, binary, 0.0, 1.0, cv::THRESH_BINARY);
         
-        FindBlobs(binary, blobs);
+//        FindBlobs(binary, blobs);
 
         
         imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
