@@ -163,7 +163,7 @@ int main()
         //  call myMotionEnergy function
         myMotionEnergy(myMotionHistory, myMH);
         
-        myHistogram(myMH);
+//        myHistogram(myMH);
         
         
         
@@ -244,23 +244,23 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
 }
 
 
-void myHistogram(Mat& src)
-{
-    int h1 = 0;
-    int h2 = 0;
-    
-    
-    for (int i = 0; i < src.rows; i++){
-        for (int j = 0; j < src.cols; j++){
-            if (src.at<uchar>(i,j) == 255){
-                if (i >= src.rows/2)
-                    h1++;
-                else
-                    h2++;
-            }
-        }
-    }
-    
-    cout << "rows is " << src.rows << " cols is " << src.cols << endl;
-    cout << "H1 is " << h1 << " H2 is " << h2 << endl;
-}
+//void myHistogram(Mat& src)
+//{
+//    int h1 = 0;
+//    int h2 = 0;
+//    
+//    
+//    for (int i = 0; i < src.rows; i++){
+//        for (int j = 0; j < src.cols; j++){
+//            if (src.at<uchar>(i,j) == 255){
+//                if (i >= src.rows/2)
+//                    h1++;
+//                else
+//                    h2++;
+//            }
+//        }
+//    }
+//    
+//    cout << "rows is " << src.rows << " cols is " << src.cols << endl;
+//    cout << "H1 is " << h1 << " H2 is " << h2 << endl;
+//}
