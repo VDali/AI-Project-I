@@ -45,13 +45,19 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
 //function used to find the min and max in the 2D array
-int minX(int poiArr[X_ARR][Y_ARR]);
-int maxX(int poiArr[X_ARR][Y_ARR]);
-int minY(int poiArr[X_ARR][Y_ARR]);
-int maxY(int poiArr[X_ARR][Y_ARR]);
+void minX();
+void maxX();
+void minY();
+void maxY();
+
+int maxXPoint[2]= {0,0};
+int minXPoint[2]= {0,0};
+int maxYPoint[2]= {0,0};
+int minYPoint[2]= {0,0};
 
 //2D array used for gesture identification
 int pointArray[X_ARR][Y_ARR];
+int position = 0;
 
         //const static int BLUR_SIZE = 10;
 
@@ -114,10 +120,11 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     {
         position = position % 50;
         
+        //Call Veena's code
     }
     pointArray[position][0] = x;
     pointArray[position][1] = y;
-    position+=1;
+    position++;
 
     //draw some crosshairs around the object
     circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
