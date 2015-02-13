@@ -24,9 +24,8 @@ using namespace cv;
 using namespace std;
 
 //dimensions of 2-D array used for frame
-const static int N = 5;
-const static int X_ARR = N;
-const static int Y_ARR = 2;
+const static int N = 12;
+const static int POINT_ARR = 2;
 
 //Function Declarations
 
@@ -45,11 +44,8 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
 //function that accumulates the frame differences for a certain number of pairs of frames
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
-//functions used to find the min and max in the 2D array
-void minX();
-void maxX();
-void minY();
-void maxY();
+//function used to find the min and max points in the gesture  2D array
+void getMinMaxPoints();
 
 
 void detectGesture();
@@ -60,7 +56,7 @@ int maxYPoint[2]= {0,0};
 int minYPoint[2]= {0,0};
 
 //2D array used for gesture identification
-int pointArray[X_ARR][Y_ARR];
+int pointArray[N][POINT_ARR];
 int position = 0;
 
 const static int BLUR_SIZE = 10;
@@ -80,21 +76,20 @@ string intToString(int number){
 }
 
 void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
+    
     bool objectDetected = false;
     Mat temp;
     thresholdImage.copyTo(temp);
+    
     //these two vectors needed for output of findContours
     vector< vector<Point> > contours;
     vector<Vec4i> hierarchy;
+    
     //find contours of filtered image using openCV findContours function
     //findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
     findContours(temp,contours,hierarchy,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_SIMPLE );// retrieves external contours
     
-//    Scalar color(0, 255, 0);
-//    Mat tempImg= Mat::zeros(temp.rows, temp.cols, CV_8UC1);
-//    drawContours(tempImg, contours, -1, color, 3);
-//    
-//    imshow("contours", tempImg);
+
 
     //if contours vector is not empty, we have found some objects
     if(contours.size()>0)objectDetected=true;
@@ -123,14 +118,13 @@ void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
     if (position >= N)
     {
         position = 0;
-        
         detectGesture();
-        
-        //Call Veena's code
+
     }
     pointArray[position][0] = x;
     pointArray[position][1] = y;
     position++;
+    
 
     //draw some crosshairs around the object
     circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
@@ -195,18 +189,17 @@ int main()
             break;
         }
         
-        //destination frame
+        //destination frames
         Mat frameDest;
-        frameDest = Mat::zeros(frame.rows, frame.cols, CV_8UC1); //Returns a zero array of same size as src mat, and of type CV_8UC1
-        
+        frameDest = Mat::zeros(frame.rows, frame.cols, CV_8UC1);
         Mat frameDest1;
         frameDest1 = Mat::zeros(frame.rows, frame.cols, CV_8UC1);
         Mat frameDest2;
         frameDest2 = Mat::zeros(frame0.rows, frame0.cols, CV_8UC1);
         
         //Blurs image to get less noise in the image
-        blur(frame,frame,cv::Size(10,10));
-        blur(frame0,frame0,cv::Size(10,10));
+        blur(frame,frame,cv::Size(BLUR_SIZE,BLUR_SIZE));
+        blur(frame0,frame0,cv::Size(BLUR_SIZE,BLUR_SIZE));
        
         //Skin color detection
         mySkinDetect(frame, frameDest1);
@@ -224,6 +217,7 @@ int main()
         
         imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
         frame0 = frame;
+        
         
         searchForMovement(frameDest,myMH);
         
@@ -265,6 +259,7 @@ void mySkinDetect(Mat& src, Mat& dst) {
     //Surveys of skin color modeling and detection techniques:
     //Vezhnevets, Vladimir, Vassili Sazonov, and Alla Andreeva. "A survey on pixel-based skin color detection techniques." Proc. Graphicon. Vol. 3. 2003.
     //Kakumanu, Praveen, Sokratis Makrogiannis, and Nikolaos Bourbakis. "A survey of skin-color modeling and detection methods." Pattern recognition 40.3 (2007): 1106-1122.
+    
     for (int i = 0; i < src.rows; i++){
         for (int j = 0; j < src.cols; j++){
             //For each pixel, compute the average intensity of the 3 color channels
@@ -279,12 +274,9 @@ void mySkinDetect(Mat& src, Mat& dst) {
 
 //Function that does frame differencing between the current frame and the previous frame
 void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst) {
-    //For more information on operation with arrays: http://docs.opencv.org/modules/core/doc/operations_on_arrays.html
-    //For more information on how to use background subtraction methods: http://docs.opencv.org/trunk/doc/tutorials/video/background_subtraction/background_subtraction.html
+
     absdiff(prev, curr, dst);
     Mat gs = dst.clone();
-    //    cvtColor(dst, gs, CV_BGR2GRAY);
-    //    dst = gs > 50;
     Vec3b intensity = dst.at<Vec3b>(100,100);
 }
 
@@ -303,115 +295,117 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
     }
 }
 
-void minX() {
+void getMinMaxPoints() {
     
-    int min = 5000000;
-    int currentMin[2]= {0, 0};
+    int minX = 5000000;
+    int maxX = -5000000;
+    int currentMinX[2]= {0, 0};
+    int currentMaxX[2]= {0, 0};
     
-    for(int i = 0; i < X_ARR; i++)
+    int minY = 5000000;
+    int maxY = -5000000;
+    int currentMinY[2]= {0, 0};
+    int currentMaxY[2]= {0, 0};
+    
+    for(int i = 0; i < N; i++)
     {
-        if (pointArray[i][0] < min)
+        
+        //Max and Min X Points
+        if (pointArray[i][0] < minX)
         {
-            min = pointArray[i][0];
-            currentMin[0] = pointArray[i][0];
-            currentMin[1] = pointArray[i][1];
+            minX = pointArray[i][0];
+            currentMinX[0] = pointArray[i][0];
+            currentMinX[1] = pointArray[i][1];
+        }
+        
+        if (pointArray[i][0] > maxX)
+        {
+            maxX = pointArray[i][0];
+            currentMaxX[0] = pointArray[i][0];
+            currentMaxX[1] = pointArray[i][1];
+        }
+        
+        //Max and Min Y Points
+        
+        if (pointArray[i][1] < minY)
+        {
+            minY = pointArray[i][1];
+            currentMinY[0] = pointArray[i][0];
+            currentMinY[1] = pointArray[i][1];
+        }
+        
+        if (pointArray[i][1] > maxY)
+        {
+            maxY = pointArray[i][1];
+            currentMaxY[0] = pointArray[i][0];
+            currentMaxY[1] = pointArray[i][1];
         }
     }
     
     
-    minXPoint[0] = currentMin[0];
-    minXPoint[1] = currentMin[1];
+    minXPoint[0] = currentMinX[0];
+    minXPoint[1] = currentMinX[1];
+    
+    maxXPoint[0] = currentMaxX[0];
+    maxXPoint[1] = currentMaxX[1];
+    
+    minYPoint[0] = currentMinY[0];
+    minYPoint[1] = currentMinY[1];
+    
+    maxYPoint[0] = currentMaxY[0];
+    maxYPoint[1] = currentMaxY[1];
     
 }
 
-void maxX() {
-    
-    int max = -5000000;
-    int currentMax[2]= {0, 0};
-    
-    for(int i = 0; i < X_ARR; i++)
-    {
-        if (pointArray[i][0] > max)
-        {
-            max = pointArray[i][0];
-            currentMax[0] = pointArray[i][0];
-            currentMax[1] = pointArray[i][1];
-        }
-    }
-    
-    
-    maxXPoint[0] = currentMax[0];
-    maxXPoint[1] = currentMax[1];
-    
-    
-}
-
-
-void minY() {
-    
-    int min = 5000000;
-    int currentMin[2]= {0, 0};
-    
-    for(int i = 0; i < X_ARR; i++)
-    {
-        if (pointArray[i][1] < min)
-        {
-            min = pointArray[i][1];
-            currentMin[0] = pointArray[i][0];
-            currentMin[1] = pointArray[i][1];
-        }
-    }
-    
-    minYPoint[0] = currentMin[0];
-    minYPoint[1] = currentMin[1];
-    
-    
-}
-
-void maxY() {
-    
-    int max = -5000000;
-    int currentMax[2]= {0, 0};
-    
-    for(int i = 0; i < X_ARR; i++)
-    {
-        if (pointArray[i][1] > max)
-        {
-            max = pointArray[i][1];
-            currentMax[0] = pointArray[i][0];
-            currentMax[1] = pointArray[i][1];
-        }
-    }
-    
-    maxYPoint[0] = currentMax[0];
-    maxYPoint[1] = currentMax[1];
-    
-    
-}
 
 void eraseArray()
 {
-    for(int i=0; i < X_ARR; i++)
+    for(int i=0; i < N; i++)
     {
         pointArray[i][0] = 0;
         pointArray[i][1] = 0;
     }
 }
 
+void showVideo(const std::string& input)
+{
+    Mat frame;
+    
+    VideoCapture capture;
+
+    capture.open(input);
+    
+    if(!capture.isOpened()){
+        cout<<"ERROR ACQUIRING VIDEO FEED\n";
+        getchar();
+        return;
+    }
+    
+    while(capture.get(CV_CAP_PROP_POS_FRAMES)<capture.get(CV_CAP_PROP_FRAME_COUNT)-1){
+        
+        capture.read(frame);
+        
+        imshow("Graphics", frame);
+        
+        waitKey(60);
+    }
+        
+        capture.release();
+    
+}
+
 void detectGesture()
 {
     
-    maxY();
-    minY();
-    minX();
-    maxX();
+    
+    getMinMaxPoints();
     
     cout << "MaxY = " << maxYPoint[1] << endl;
     cout << "MinY = " << minYPoint[1] << endl;
     cout << "MaxX = " << maxXPoint[0] << endl;
     cout << "MinX = " << minXPoint[0] << endl;
     
-    if (maxXPoint[0] - minXPoint[0] > 200 &&  maxYPoint[1] - minYPoint[1] > 200)
+    if (maxXPoint[0] - minXPoint[0] > 300 &&  maxYPoint[1] - minYPoint[1] > 300)
     {
         
         cout << "WIPING DETECTED" << endl;
@@ -419,14 +413,22 @@ void detectGesture()
         position = 0;
         eraseArray();
         
+        showVideo("cleaning.mp4");
+        
+        waitKey(5000);
+        
     }
-    else if (maxXPoint[0] - minXPoint[0] > 200 &&  maxYPoint[1] - minYPoint[1] < 50)
+    else if (maxXPoint[0] - minXPoint[0] > 300 &&  maxYPoint[1] - minYPoint[1] < 150)
     {
         
         cout << "PETTING DETECTED" << endl;
         
         position = 0;
         eraseArray();
+        
+        showVideo("petting.gif");
+        
+        waitKey(5000);
         
         
     }
@@ -439,11 +441,18 @@ void detectGesture()
         position = 0;
         eraseArray();
         
+        showVideo("catch.gif");
+        
+        waitKey(5000);
+        
     }
     else
     {
         cout << "NOTHING" << endl;
     }
+    
 }
+
+
 
 
