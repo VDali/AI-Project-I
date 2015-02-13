@@ -28,13 +28,9 @@
 using namespace cv;
 using namespace std;
 
-int  thresh = 100;
-int max_thresh = 255;
-RNG rng(12345);
 
 //function declarations
 
-void FindBlobs(const cv::Mat &binary, std::vector < std::vector<cv::Point2i> > &blobs);
 
 /**
 	Function that returns the maximum of 3 integers
@@ -75,7 +71,90 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst);
  */
 void myMotionEnergy(Vector<Mat> mh, Mat& dst);
 
-void myHistogram(Mat& src);
+
+
+
+
+//our sensitivity value to be used in the absdiff() function
+const static int SENSITIVITY_VALUE = 40;
+//size of blur used to smooth the intensity image output from absdiff() function
+const static int BLUR_SIZE = 10;
+//we'll have just one object to search for
+//and keep track of its position.
+int theObject[2] = {0,0};
+//bounding rectangle of the object, we will use the center of this as its position.
+Rect objectBoundingRectangle = Rect(0,0,0,0);
+
+int pointArray[2][50];
+
+
+//int to string helper function
+string intToString(int number){
+
+    //this function has a number input and string output
+    std::stringstream ss;
+    ss << number;
+    return ss.str();
+}
+
+
+
+void searchForMovement(Mat thresholdImage, Mat &cameraFeed){
+    //notice how we use the '&' operator for objectDetected and cameraFeed. This is because we wish
+    //to take the values passed into the function and manipulate them, rather than just working with a copy.
+    //eg. we draw to the cameraFeed to be displayed in the main() function.
+    bool objectDetected = false;
+    Mat temp;
+    thresholdImage.copyTo(temp);
+    //these two vectors needed for output of findContours
+    vector< vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    //find contours of filtered image using openCV findContours function
+    //findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
+    findContours(temp,contours,hierarchy,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_SIMPLE );// retrieves external contours
+    
+    Scalar color(0, 255, 0);
+    Mat tempImg= Mat::zeros(temp.rows, temp.cols, CV_8UC1);
+    drawContours(tempImg, contours, -1, color, 3);
+    
+    imshow("contours", tempImg);
+
+    //if contours vector is not empty, we have found some objects
+    if(contours.size()>0)objectDetected=true;
+    else objectDetected = false;
+
+    if(objectDetected){
+        //the largest contour is found at the end of the contours vector
+        //we will simply assume that the biggest contour is the object we are looking for.
+        vector< vector<Point> > largestContourVec;
+        largestContourVec.push_back(contours.at(contours.size()-1));
+        //make a bounding rectangle around the largest contour then find its centroid
+        //this will be the object's final estimated position.
+        objectBoundingRectangle = boundingRect(largestContourVec.at(0));
+        int xpos = objectBoundingRectangle.x+objectBoundingRectangle.width/2;
+        int ypos = objectBoundingRectangle.y+objectBoundingRectangle.height/2;
+
+        //update the objects positions by changing the 'theObject' array values
+        theObject[0] = xpos , theObject[1] = ypos;
+    }
+    //make some temp x and y variables so we dont have to type out so much
+    int x = theObject[0];
+    int y = theObject[1];
+
+    //draw some crosshairs around the object
+    circle(cameraFeed,Point(x,y),20,Scalar(0,255,0),2);
+    line(cameraFeed,Point(x,y),Point(x,y-25),Scalar(0,255,0),2);
+    line(cameraFeed,Point(x,y),Point(x,y+25),Scalar(0,255,0),2);
+    line(cameraFeed,Point(x,y),Point(x-25,y),Scalar(0,255,0),2);
+    line(cameraFeed,Point(x,y),Point(x+25,y),Scalar(0,255,0),2);
+
+    //write the position of the object to the screen
+    putText(cameraFeed,"Tracking object at (" + intToString(x)+","+intToString(y)+")",Point(x,y),1,1,Scalar(255,0,0),2);
+
+
+
+}
+
 
 int main()
 {
@@ -108,7 +187,7 @@ int main()
     }
     
     //show the frame in "MyVideo" window
-//    imshow("MyVideo0", frame0);
+    //    imshow("MyVideo0", frame0);
     
     //create a window called "MyVideo"
     namedWindow("MyVideo",WINDOW_AUTOSIZE);
@@ -144,6 +223,10 @@ int main()
         frameDest1 = Mat::zeros(frame.rows, frame.cols, CV_8UC1);
         Mat frameDest2;
         frameDest2 = Mat::zeros(frame0.rows, frame0.cols, CV_8UC1);
+        
+        
+        blur(frame,frame,cv::Size(10,10));
+        blur(frame0,frame0,cv::Size(10,10));
         ////----------------
         ////	b) Skin color detection
         ////----------------
@@ -153,6 +236,9 @@ int main()
         ////----------------
         ////	c) Background differencing
         ////----------------
+        
+//        blur(frame,frame,cv::Size(10,10));
+//        blur(frame0,frame0,cv::Size(10,10));
         
         
         //        call myFrameDifferencing function
@@ -169,16 +255,15 @@ int main()
         //  call myMotionEnergy function
         myMotionEnergy(myMotionHistory, myMH);
         
-//        myHistogram(myMH);
         
-        
-        cv::threshold(myMH, binary, 0.0, 1.0, cv::THRESH_BINARY);
-        
-//        FindBlobs(binary, blobs);
-
-        
+                
         imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
         frame0 = frame;
+        
+        searchForMovement(frameDest,myMH);
+        
+        imshow("Frame", myMH);
+        
         //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
         if (waitKey(30) == 27)
         {
@@ -186,6 +271,7 @@ int main()
             break;
         }
         
+
     }
     cap.release();
     return 0;
@@ -232,8 +318,8 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst) {
     //For more information on how to use background subtraction methods: http://docs.opencv.org/trunk/doc/tutorials/video/background_subtraction/background_subtraction.html
     absdiff(prev, curr, dst);
     Mat gs = dst.clone();
-//    cvtColor(dst, gs, CV_BGR2GRAY);
-//    dst = gs > 50;
+    //    cvtColor(dst, gs, CV_BGR2GRAY);
+    //    dst = gs > 50;
     Vec3b intensity = dst.at<Vec3b>(100,100);
 }
 
@@ -253,23 +339,3 @@ void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
 }
 
 
-//void myHistogram(Mat& src)
-//{
-//    int h1 = 0;
-//    int h2 = 0;
-//    
-//    
-//    for (int i = 0; i < src.rows; i++){
-//        for (int j = 0; j < src.cols; j++){
-//            if (src.at<uchar>(i,j) == 255){
-//                if (i >= src.rows/2)
-//                    h1++;
-//                else
-//                    h2++;
-//            }
-//        }
-//    }
-//    
-//    cout << "rows is " << src.rows << " cols is " << src.cols << endl;
-//    cout << "H1 is " << h1 << " H2 is " << h2 << endl;
-//}
