@@ -29,7 +29,7 @@
 /* Begin PBXFileReference section */
 		1D9E80281A8D9542003A180A /* Lab2_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lab2_2.cpp; sourceTree = "<group>"; };
 		1D9E802B1A8D968B003A180A /* StartingPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartingPoint.cpp; sourceTree = "<group>"; };
-		55C938E61A84438B00B14BBE /* AI Project I */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AI Project I"; sourceTree = BUILT_PRODUCTS_DIR; };
+		55C938E61A84438B00B14BBE /* AI_Project_1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI_Project_1; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C938FC1A8445B000B14BBE /* libopencv_highgui.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_highgui.dylib; sourceTree = "<group>"; };
 		55C938FE1A8445B700B14BBE /* libopencv_core.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_core.dylib; sourceTree = "<group>"; };
 		55C939001A8445CB00B14BBE /* libopencv_imgproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_imgproc.dylib; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 		55C938E71A84438B00B14BBE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55C938E61A84438B00B14BBE /* AI Project I */,
+				55C938E61A84438B00B14BBE /* AI_Project_1 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,9 +80,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		55C938E51A84438B00B14BBE /* AI Project I */ = {
+		55C938E51A84438B00B14BBE /* AI_Project_1 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 55C938ED1A84438B00B14BBE /* Build configuration list for PBXNativeTarget "AI Project I" */;
+			buildConfigurationList = 55C938ED1A84438B00B14BBE /* Build configuration list for PBXNativeTarget "AI_Project_1" */;
 			buildPhases = (
 				55C938E21A84438B00B14BBE /* Sources */,
 				55C938E31A84438B00B14BBE /* Frameworks */,
@@ -92,9 +92,9 @@
 			);
 			dependencies = (
 			);
-			name = "AI Project I";
+			name = AI_Project_1;
 			productName = "AI Project I";
-			productReference = 55C938E61A84438B00B14BBE /* AI Project I */;
+			productReference = 55C938E61A84438B00B14BBE /* AI_Project_1 */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -111,7 +111,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 55C938E11A84438B00B14BBE /* Build configuration list for PBXProject "AI Project I" */;
+			buildConfigurationList = 55C938E11A84438B00B14BBE /* Build configuration list for PBXProject "AI_Project_1" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -123,7 +123,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				55C938E51A84438B00B14BBE /* AI Project I */,
+				55C938E51A84438B00B14BBE /* AI_Project_1 */,
 			);
 		};
 /* End PBXProject section */
@@ -235,7 +235,7 @@
 					I,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AI_Project_1;
 				SDKROOT = macosx10.9;
 			};
 			name = Debug;
@@ -260,7 +260,7 @@
 					I,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AI_Project_1;
 				SDKROOT = macosx10.9;
 			};
 			name = Release;
@@ -268,7 +268,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		55C938E11A84438B00B14BBE /* Build configuration list for PBXProject "AI Project I" */ = {
+		55C938E11A84438B00B14BBE /* Build configuration list for PBXProject "AI_Project_1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55C938EB1A84438B00B14BBE /* Debug */,
@@ -277,7 +277,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55C938ED1A84438B00B14BBE /* Build configuration list for PBXNativeTarget "AI Project I" */ = {
+		55C938ED1A84438B00B14BBE /* Build configuration list for PBXNativeTarget "AI_Project_1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55C938EE1A84438B00B14BBE /* Debug */,

@@ -24,7 +24,8 @@ using namespace cv;
 using namespace std;
 
 //dimensions of 2-D array used for frame
-const static int N = 12;
+const static int N = 15
+;
 const static int POINT_ARR = 2;
 
 //Function Declarations
@@ -207,15 +208,15 @@ int main()
         
         //background differencing
         myFrameDifferencing(frameDest1, frameDest2, frameDest);
-        imshow("MyVideo", frameDest);
+//        imshow("MyVideo", frameDest);
         myMotionHistory.erase(myMotionHistory.begin());
         myMotionHistory.push_back(frameDest);
         Mat myMH = Mat::zeros(frame0.rows, frame0.cols, CV_8UC1);
         
-        //Visualizing motion history
+//        Visualizing motion history
         myMotionEnergy(myMotionHistory, myMH);
         
-        imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
+//        imshow("MyVideoMH", myMH); //show the frame in "MyVideo" window
         frame0 = frame;
         
         
@@ -239,6 +240,7 @@ int main()
 }
 
 //Function that returns the maximum of 3 integers
+//From: Lab2
 int myMax(int a, int b, int c) {
     int m = a;
     (void)((m < b) && (m = b));
@@ -247,6 +249,7 @@ int myMax(int a, int b, int c) {
 }
 
 //Function that returns the minimum of 3 integers
+//From: Lab2
 int myMin(int a, int b, int c) {
     int m = a;
     (void)((m > b) && (m = b));
@@ -255,16 +258,16 @@ int myMin(int a, int b, int c) {
 }
 
 //Function that detects whether a pixel belongs to the skin based on RGB values
+//From: Lab2
 void mySkinDetect(Mat& src, Mat& dst) {
-    //Surveys of skin color modeling and detection techniques:
-    //Vezhnevets, Vladimir, Vassili Sazonov, and Alla Andreeva. "A survey on pixel-based skin color detection techniques." Proc. Graphicon. Vol. 3. 2003.
-    //Kakumanu, Praveen, Sokratis Makrogiannis, and Nikolaos Bourbakis. "A survey of skin-color modeling and detection methods." Pattern recognition 40.3 (2007): 1106-1122.
-    
+
     for (int i = 0; i < src.rows; i++){
         for (int j = 0; j < src.cols; j++){
+            
             //For each pixel, compute the average intensity of the 3 color channels
-            Vec3b intensity = src.at<Vec3b>(i,j); //Vec3b is a vector of 3 uchar (unsigned character)
+            Vec3b intensity = src.at<Vec3b>(i,j);
             int B = intensity[0]; int G = intensity[1]; int R = intensity[2];
+            
             if ((R > 95 && G > 40 && B > 20) && (myMax(R,G,B) - myMin(R,G,B) > 15) && (abs(R-G) > 15) && (R > G) && (R > B)){
                 dst.at<uchar>(i,j) = 255;
             }
@@ -273,6 +276,7 @@ void mySkinDetect(Mat& src, Mat& dst) {
 }
 
 //Function that does frame differencing between the current frame and the previous frame
+//From: Lab2 + changes of our own.
 void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst) {
 
     absdiff(prev, curr, dst);
@@ -281,6 +285,7 @@ void myFrameDifferencing(Mat& prev, Mat& curr, Mat& dst) {
 }
 
 //Function that accumulates the frame differences for a certain number of pairs of frames
+//From: Lab2
 void myMotionEnergy(Vector<Mat> mh, Mat& dst) {
     Mat mh0 = mh[0];
     Mat mh1 = mh[1];
@@ -405,20 +410,22 @@ void detectGesture()
     cout << "MaxX = " << maxXPoint[0] << endl;
     cout << "MinX = " << minXPoint[0] << endl;
     
-    if (maxXPoint[0] - minXPoint[0] > 300 &&  maxYPoint[1] - minYPoint[1] > 300)
+    
+    
+    if (maxYPoint[1] - minYPoint[1] > 500 && maxXPoint[0] - minXPoint[0] < 150)
     {
         
-        cout << "WIPING DETECTED" << endl;
+        
+        cout << "THROW DETECTED" << endl;
         
         position = 0;
         eraseArray();
         
-        showVideo("cleaning.mp4");
+        showVideo("catch.gif");
         
         waitKey(5000);
-        
     }
-    else if (maxXPoint[0] - minXPoint[0] > 300 &&  maxYPoint[1] - minYPoint[1] < 150)
+    else if (maxXPoint[0] - minXPoint[0] > 300 &&  maxYPoint[1] - minYPoint[1] < 350)
     {
         
         cout << "PETTING DETECTED" << endl;
@@ -432,16 +439,15 @@ void detectGesture()
         
         
     }
-    else if (maxYPoint[1] - minYPoint[1] > 300)
+    else if (maxYPoint[1] - minYPoint[1] > 300 &&   maxXPoint[0] - minXPoint[0] > 300)
     {
         
-
-        cout << "THROW DETECTED" << endl;
+        cout << "WIPING DETECTED" << endl;
         
         position = 0;
         eraseArray();
         
-        showVideo("catch.gif");
+        showVideo("wipe.gif");
         
         waitKey(5000);
         
