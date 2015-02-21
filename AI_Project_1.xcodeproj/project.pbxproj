@@ -27,6 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D22852E1A98D6B400827A39 /* catch.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = catch.gif; sourceTree = "<group>"; };
+		1D22852F1A98D6B400827A39 /* petting.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = petting.gif; sourceTree = "<group>"; };
+		1D2285301A98D6B400827A39 /* wipe.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = wipe.gif; sourceTree = "<group>"; };
 		1D9E80281A8D9542003A180A /* Lab2_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lab2_2.cpp; sourceTree = "<group>"; };
 		1D9E802B1A8D968B003A180A /* StartingPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartingPoint.cpp; sourceTree = "<group>"; };
 		55C938E61A84438B00B14BBE /* AI_Project_1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI_Project_1; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +52,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D2285311A98D6BE00827A39 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				1D22852E1A98D6B400827A39 /* catch.gif */,
+				1D22852F1A98D6B400827A39 /* petting.gif */,
+				1D2285301A98D6B400827A39 /* wipe.gif */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		55C938DD1A84438B00B14BBE = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +84,7 @@
 				55C938FE1A8445B700B14BBE /* libopencv_core.dylib */,
 				55C939001A8445CB00B14BBE /* libopencv_imgproc.dylib */,
 				55C938FC1A8445B000B14BBE /* libopencv_highgui.dylib */,
+				1D2285311A98D6BE00827A39 /* Images */,
 				1D9E80281A8D9542003A180A /* Lab2_2.cpp */,
 				1D9E802B1A8D968B003A180A /* StartingPoint.cpp */,
 			);
